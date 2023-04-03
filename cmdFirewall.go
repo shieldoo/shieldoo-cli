@@ -153,7 +153,7 @@ var firewallShowCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		if ret == "" || strings.TrimSpace(ret) == "null" {
-			fmt.Printf("Group not found\n")
+			fmt.Printf("Firewall not found\n")
 			os.Exit(1)
 		}
 		// if it is json array than clean it up
