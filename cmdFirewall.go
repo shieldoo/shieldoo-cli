@@ -106,7 +106,7 @@ var firewallEnsureCmd = &cobra.Command{
 				os.Exit(1)
 			}
 		}
-		fmt.Printf("Firewall detail: %s\n", fwDetailData)
+		fmt.Println(fwDetailData)
 	},
 }
 
