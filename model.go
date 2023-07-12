@@ -29,12 +29,22 @@ type Listener struct {
 }
 
 type Server struct {
-	Id          string     `json:"id"`
-	Name        string     `json:"name"`
-	Groups      []Group    `json:"groups"`
-	Firewall    Firewall   `json:"firewall"`
-	Listeners   []Listener `json:"listeners"`
-	Autoupdate  bool       `json:"autoupdate"`
-	IpAddress   string     `json:"ipAddress"`
-	Description string     `json:"description"`
+	Id             string                   `json:"id"`
+	Name           string                   `json:"name"`
+	Groups         []Group                  `json:"groups"`
+	Firewall       Firewall                 `json:"firewall"`
+	Listeners      []Listener               `json:"listeners"`
+	Autoupdate     bool                     `json:"autoupdate"`
+	IpAddress      string                   `json:"ipAddress"`
+	Description    string                   `json:"description"`
+	Configuration  string                   `json:"configuration"`
+	OSUpdatePolicy ServerOSAutoupdatePolicy `json:"osUpdatePolicy"`
+}
+
+type ServerOSAutoupdatePolicy struct {
+	Enabled                   bool `json:"enabled"`
+	SecurityAutoupdateEnabled bool `json:"securityAutoupdateEnabled"`
+	AllAutoupdateEnabled      bool `json:"allAutoupdateEnabled"`
+	RestartAfterUpdate        bool `json:"restartAfterUpdate"`
+	UpdateHour                int  `json:"updateHour"`
 }
