@@ -28,6 +28,12 @@ func initServerCmd() *cobra.Command {
 	serverEnsureCmd.Flags().String("firewall-id", "", "Firewall ID (required)")
 	serverEnsureCmd.Flags().String("firewall-name", "", "Firewall name (required)")
 	serverEnsureCmd.Flags().String("description", "", "Description of the server (optional)")
+	serverEnsureCmd.Flags().String("autoupdate", "false", "Enable shieldoo client auto update [false, true] (optional)")
+	serverEnsureCmd.Flags().String("osautoupdate", "false", "Enable OS auto update [false, true] (optional)")
+	serverEnsureCmd.Flags().String("ossecurityupdates", "false", "Apply security OS updates [false, true] (optional)")
+	serverEnsureCmd.Flags().String("osallupdates", "false", "Apply all OS updates [false, true] (optional)")
+	serverEnsureCmd.Flags().String("osrestart", "false", "Enable OS restart after update [false, true] (optional)")
+	serverEnsureCmd.Flags().Int("osupdatehour", 0, "Define update hour in GMT time [0=anytime] (optional)")
 	serverEnsureCmd.MarkFlagRequired("name")
 	serverCmd.AddCommand(serverEnsureCmd)
 
@@ -55,6 +61,12 @@ var serverEnsureCmd = &cobra.Command{
 		groups, _ := cmd.Flags().GetString("groups")
 		ipAddr, _ := cmd.Flags().GetString("ip")
 		description, _ := cmd.Flags().GetString("description")
+		autoupdate, _ := cmd.Flags().GetString("autoupdate")
+		osaupdate, _ := cmd.Flags().GetString("osautoupdate")
+		ossecurityupdates, _ := cmd.Flags().GetString("ossecurityupdates")
+		osallupdates, _ := cmd.Flags().GetString("osallupdates")
+		osrestart, _ := cmd.Flags().GetString("osrestart")
+		osupdatehour, _ := cmd.Flags().GetInt("osupdatehour")
 
 		if firewallId == "" && firewallName == "" {
 			fmt.Printf("Error: either firewall-id or firewall-id must be specified\n")
@@ -123,6 +135,14 @@ var serverEnsureCmd = &cobra.Command{
 			Listeners:   list,
 			IpAddress:   ipAddr,
 			Description: description,
+			Autoupdate:  autoupdate == "true",
+			OSUpdatePolicy: ServerOSAutoupdatePolicy{
+				Enabled:                   osaupdate == "true",
+				SecurityAutoupdateEnabled: ossecurityupdates == "true",
+				AllAutoupdateEnabled:      osallupdates == "true",
+				RestartAfterUpdate:        osrestart == "true",
+				UpdateHour:                osupdatehour,
+			},
 		}
 		if len(servers) > 0 {
 			// server already exists
